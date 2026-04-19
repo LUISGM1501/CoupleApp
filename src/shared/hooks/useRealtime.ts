@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { supabase } from '@/shared/lib/supabase'
 import type { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
-import { MOCK } from '@/shared/lib/mock'
 
 type Event = 'INSERT' | 'UPDATE' | 'DELETE' | '*'
 
@@ -21,7 +20,6 @@ export function useRealtime<T extends Record<string, unknown>>({
   onChange,
 }: Options<T>) {
   useEffect(() => {
-    if (MOCK) return
     if (!enabled) return
     const channel = supabase
       .channel(`rt-${table}-${filter ?? 'all'}`)

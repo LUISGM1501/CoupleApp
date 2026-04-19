@@ -3,7 +3,6 @@ import { useMyProfile } from '@/features/auth/hooks'
 import * as api from './api'
 import { useRealtime } from '@/shared/hooks/useRealtime'
 import type { Profile } from '@/types/database'
-import { MOCK, mockDB, mockActions } from '@/shared/lib/mock'
 
 export function useCouple() {
   const { data: me } = useMyProfile()
@@ -12,13 +11,13 @@ export function useCouple() {
   const couple = useQuery({
     enabled: !!coupleId,
     queryKey: ['couple', coupleId],
-    queryFn: async () => (MOCK ? mockDB.couple : api.fetchCouple(coupleId!)),
+    queryFn: () => api.fetchCouple(coupleId!),
   })
 
   const members = useQuery({
     enabled: !!coupleId,
     queryKey: ['couple-members', coupleId],
-    queryFn: async () => (MOCK ? [mockDB.me, mockDB.partner] : api.fetchCoupleMembers(coupleId!)),
+    queryFn: () => api.fetchCoupleMembers(coupleId!),
     staleTime: 1000 * 30,
   })
 
@@ -43,10 +42,7 @@ export function usePartnerRealtime(coupleId: string | null | undefined) {
 export function useUpdateProfile() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (patch: { display_name?: string; photo_url?: string | null }) => {
-      if (MOCK) return mockActions.updateProfile(patch)
-      return api.updateMyProfile(patch)
-    },
+    mutationFn: api.updateMyProfile,
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['my-profile'] })
       qc.invalidateQueries({ queryKey: ['couple-members'] })
@@ -55,7 +51,5 @@ export function useUpdateProfile() {
 }
 
 export function useUploadAvatar() {
-  return useMutation({
-    mutationFn: async (file: File) => (MOCK ? mockActions.uploadAvatar(file) : api.uploadAvatar(file)),
-  })
+  return useMutation({ mutationFn: api.uploadAvatar })
 }

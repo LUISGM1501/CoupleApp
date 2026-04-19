@@ -65,27 +65,9 @@ El archivo `.env.local` debe tener:
 VITE_SUPABASE_URL=https://xxxx.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGci...
 VITE_BASE_PATH=/
-VITE_MOCK=false
 ```
 
-> `VITE_BASE_PATH` se deja en `/` para dev y Capacitor. Para GitHub Pages **project site** (URL tipo `usuario.github.io/repo/`), poné `/repo/`. Si usás **custom domain** o **user page** (`usuario.github.io`), dejalo en `/`.
-
-### 🎨 Modo preview (probar sin Supabase)
-
-Para ver la app y navegar sin tener que registrarte ni crear datos reales:
-
-```
-VITE_MOCK=true
-```
-
-en `.env.local`, después `npm run dev`. Arranca directo en Home con un usuario falso ("Luis"), su pareja ("Sofi"), 5 recuerdos de ejemplo y 2 comentarios. Podés:
-
-- navegar entre Home / Recuerdos / Perfil
-- crear, editar y borrar recuerdos (persisten en memoria durante la sesión)
-- cambiar de mood, editar tu nombre, cambiar avatar
-- comentar y borrar comentarios
-
-Los cambios se pierden al recargar (F5) porque es todo en memoria. Una barra amarilla arriba te recuerda que estás en modo preview. **Acordate de poner `VITE_MOCK=false` (o borrar la línea) antes de hacer build para producción.**
+> `VITE_BASE_PATH` se deja en `/` para dev y Capacitor. Para GitHub Pages **project site** (URL tipo `usuario.github.io/CoupleApp/`), poné `/CoupleApp/`. Si usás **custom domain** o **user page** (`usuario.github.io`), dejalo en `/`.
 
 ---
 

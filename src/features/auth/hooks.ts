@@ -4,15 +4,11 @@ import { supabase } from '@/shared/lib/supabase'
 import * as api from './api'
 import type { Session } from '@supabase/supabase-js'
 import type { Profile } from '@/types/database'
-import { MOCK, MOCK_SESSION, mockDB } from '@/shared/lib/mock'
 
 export function useSession() {
-  const [session, setSession] = useState<Session | null | undefined>(
-    MOCK ? MOCK_SESSION : undefined,
-  )
+  const [session, setSession] = useState<Session | null | undefined>(undefined)
 
   useEffect(() => {
-    if (MOCK) return
     let alive = true
     supabase.auth.getSession().then(({ data }) => {
       if (alive) setSession(data.session ?? null)
@@ -33,7 +29,6 @@ export function useMyProfile() {
     enabled: !!userId,
     queryKey: ['my-profile', userId],
     queryFn: async () => {
-      if (MOCK) return mockDB.me
       const { data, error } = await supabase
         .from('profiles').select('*').eq('id', userId!).single()
       if (error) throw error
