@@ -4,7 +4,8 @@ import type { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 
 type Event = 'INSERT' | 'UPDATE' | 'DELETE' | '*'
 
-interface Options<T extends Record<string, unknown>> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+interface Options<T extends { [k: string]: any } = any> {
   table: string
   event?: Event
   filter?: string
@@ -12,7 +13,8 @@ interface Options<T extends Record<string, unknown>> {
   onChange: (payload: RealtimePostgresChangesPayload<T>) => void
 }
 
-export function useRealtime<T extends Record<string, unknown>>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useRealtime<T extends { [k: string]: any } = any>({
   table,
   event = '*',
   filter,

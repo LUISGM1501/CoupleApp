@@ -7,12 +7,12 @@ export class TimeoutError extends Error {
   }
 }
 
-export function withTimeout<T>(promise: Promise<T>, ms = 30_000, label = 'operación'): Promise<T> {
+export function withTimeout<T>(promise: Promise<T> | PromiseLike<T>, ms = 30_000, label = 'operación'): Promise<T> {
   let timer: ReturnType<typeof setTimeout>
   const timeout = new Promise<never>((_, reject) => {
     timer = setTimeout(() => reject(new TimeoutError(`La ${label} tardó más de lo esperado.`)), ms)
   })
-  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer))
+  return Promise.race([Promise.resolve(promise), timeout]).finally(() => clearTimeout(timer))
 }
 
 export async function retry<T>(
